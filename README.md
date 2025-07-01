@@ -1,50 +1,35 @@
-# React + TypeScript + Vite
+# 💼 Crypto 钱包资产总览（React + TypeScript + Vite）
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📁 项目结构说明
 
-Currently, two official plugins are available:
+src/
+├── components/ # UI 组件（WalletOverview、AssetItem）
+├── data/ # 本地 JSON 数据（余额、汇率、币种）
+├── types/ # TypeScript 类型定义
+├── utils/ # 工具函数（如格式化金额）
+├── App.tsx # 项目入口
+├── App.css # 页面样式
+└── main.tsx
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 📊 数据处理逻辑
 
-- Configure the top-level `parserOptions` property like this:
+项目主要读取以下三类本地数据文件：
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+| 数据类型       | 文件名                     | 说明                     |
+|----------------|----------------------------|--------------------------|
+| 钱包余额       | `wallet-balance.json`      | 用户持有的各币种数量     |
+| USD 汇率       | `live-rates.json`          | 各币种当前兑 USD 的汇率 |
+| 币种信息       | `currencies.json`          | 币种名称、图标、精度等信息 |
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+**计算逻辑：**
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+```ts
+usd估值 = amount × usd汇率
+总资产 = 所有币种 usd估值 之和
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+
+🚀 快速启动
+pnpm install
+pnpm dev
